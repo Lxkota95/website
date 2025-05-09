@@ -8,4 +8,4 @@ tree ../
 cat netlify.toml
 stat ../server/main.go
 
-go build -o /.netlify/lxkota ../server/main.go
+go build -o lxkota ../server/main.go
