@@ -4,8 +4,8 @@ tmp_dir = "tmp"
 
 [build]
   args_bin = []
-  bin = "./tmp/web_app"
-  cmd = "go build -o ./tmp/web_app server/main.go"
+  bin = "./tmp/lxkota"
+  cmd = "go build -o ./tmp/lxkota server/main.go"
   delay = 0
   full_bin = ""
   include_dir = ["content", "static", "server"]
