@@ -69,7 +69,8 @@ func markdownToHTML(file string, e *echo.Echo) template.HTML {
 	return template.HTML(htmlContent)
 }
 
-func main() {
+// SetupEcho creates and configures the Echo instance
+func SetupEcho() *echo.Echo {
 	// initialize server
 	e := echo.New()
 	e.Use(middleware.Logger())
@@ -86,6 +87,19 @@ func main() {
 		return c.Render(200, "template.html", page_data)
 	})
 
-	// start server
+	return e
+}
+
+// HandleRequest processes a request using Echo's context
+func HandleRequest(c echo.Context) error {
+	e := SetupEcho()
+
+	// Use the Echo framework to handle the request
+	return e.ServeHTTP(c.Response(), c.Request())
+}
+
+func main() {
+	e := SetupEcho()
+	// start server - only used for local development
 	e.Logger.Info(e.Start(":42069"))
 }

@@ -1,6 +1,24 @@
 [build]
-base = ".netlify"
-command = "./build.sh"
+  base = ".netlify"
+  publish = "../public"
+  command = "./build.sh"
 
 [build.environment]
-GO_VERSION = "1.23.1"
+  GO_VERSION = "1.23.1"
+
+[functions]
+  directory = "../functions"
+  node_bundler = "esbuild"
+  included_files = ["../content/**/*", "../template.html"]
+
+[[redirects]]
+  from = "/static/*"
+  to = "/static/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/server/:splat"
+  status = 200
+  force = false
+  conditions = {Path = "!/static/*"}

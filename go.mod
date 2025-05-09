@@ -3,6 +3,7 @@ module server/main
 go 1.23.1
 
 require (
+	github.com/aws/aws-lambda-go v1.48.0
 	github.com/gomarkdown/markdown v0.0.0-20250311123330-531bef5e742b
 	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/gommon v0.4.2
