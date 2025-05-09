@@ -1,0 +1,6 @@
+[build]
+base = ".netlify"
+command = "ls -latr; go build -o /.netlify/lxkota /server/main.go"
+
+[build.environment]
+GO_VERSION = "1.23.1"
