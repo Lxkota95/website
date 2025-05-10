@@ -30,3 +30,6 @@ A web app to help me learn Go & HTMX
   - Deploy with `flyctl deploy --config configs/fly.toml`
   - Check status with `flyctl status --config configs/fly.toml`
   - Check logs with `flyctl logs --config configs/fly.toml`
+- For SSH:
+  - Create token: `flyctl tokens create ssh -a lxkota > lxkota.token.ssh`
+  - SSH: `FLY_API_TOKEN=$(cat lxkota.token.ssh) flyctl ssh console -a lxkota`
