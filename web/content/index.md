@@ -2,13 +2,13 @@
 - Staff Platform Engineer in FinTech |📍NYC
 - I built (and host) this site myself primarily to learn Go and HTMX
 - Below you'll find information about my personal projects
-- [LinkedIn](linkedin.com/in/jack-p-coleman)
+- [LinkedIn](https://linkedin.com/in/jack-p-coleman)
 
 ## Projects
 
 ### 1. Website
 #### A web server built on Go, HTMX, and Markdown to display my projects
-- [Source Code Repository](https://github.com/Lxkota95/web_app)
+- [Source Code Repository](https://github.com/Lxkota95/website)
 
 Everything starts with markdown files - including this page you're reading 👀
 
