@@ -24,7 +24,7 @@ func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Con
 
 func NewTemplate() *Template {
 	return &Template{
-		templates: template.Must(template.ParseFiles("template.html")),
+		templates: template.Must(template.ParseFiles("./web/template.html")),
 	}
 }
 
@@ -80,7 +80,7 @@ func main() {
 
 	e.GET("/", func(c echo.Context) error {
 		// create page data with a title based on the file name
-		page_data := NewPage("./content/index.md", e)
+		page_data := NewPage("./web/content/index.md", e)
 
 		// Render the template with our data
 		return c.Render(200, "template.html", page_data)

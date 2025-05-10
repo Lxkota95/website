@@ -5,10 +5,10 @@ tmp_dir = "tmp"
 [build]
   args_bin = []
   bin = "./tmp/lxkota"
-  cmd = "go build -o ./tmp/lxkota server/main.go"
+  cmd = "go build -o ./tmp/lxkota cmd/server/main.go"
   delay = 0
   full_bin = ""
-  include_dir = ["content", "static", "server"]
+  include_dir = ["web", "static", "cmd"]
   include_ext = ["go", "html", "md", "toml"]
   include_file = ["template.html", ".air.toml"]
   exclude_dir = [""]
