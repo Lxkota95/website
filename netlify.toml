@@ -1,6 +1,0 @@
-[build]
-base = ".netlify"
-command = "./build.sh"
-
-[build.environment]
-GO_VERSION = "1.23.1"
