@@ -1,4 +1,4 @@
-module server/main
+module cmd/server/main
 
 go 1.23.1
 

@@ -6,11 +6,25 @@ A web app to help me learn Go & HTMX
 - [X] Render HTML pages from templates
 - [X] Add basic content that describes my engineering projects
 - [X] Add code samples for each project
+- [X] Create Dockerfile and image
+- [ ] Set up CI/CD deployment
 - [ ] Look into syntax highlighting for code samples
 - [ ] Add drop-down sections for each project using HTMX
-- [ ] Set up CI/CD deployment
+- [ ] Look into Go's `embed` module to include static files in the binary
 
-## Deployment | Netlify
-- Netlify is used to deploy and host this site
-- Configuration file `netlify.toml` lives in the root of this repo 
-- Any commits to the `main` branch of this repo will trigger a deployment in Netlify through GitHub
+## Development
+- The `air` framework is used for local development & testing
+- Build and execute with `air -c configs/.air.toml`
+
+## Docker
+- Configuration file: `build/Dockerfile`
+- Build: `sudo docker build -t lxkota-test -f build/Dockerfile .`
+- Run: `sudo docker run lxkota-test`
+
+## Deployment
+- Fly.io is used to deploy and host this site
+- Configuration file: `configs/fly.toml`
+- Fly's command line utility `flyctl` is used to orchestrate deployments:
+  - Deploy with `flyctl deploy --config configs/fly.toml`
+  - Check status with `flyctl status --config configs/fly.toml`
+  - Check logs with `flyctl logs --config configs/fly.toml`
