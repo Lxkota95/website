@@ -1,16 +1,14 @@
-FROM golang:1.23 AS builder
+ARG GO_VERSION=1
+FROM golang:${GO_VERSION}-bookworm as builder
 
-WORKDIR /app
+WORKDIR /usr/src/app
+COPY go.mod go.sum ./
+RUN go mod download && go mod verify
+COPY . .
+RUN ls -latr .
+RUN go build -v -o /lxkota server/main.go
 
-COPY go.mod ./
-COPY *.go ./
+FROM debian:bookworm
 
-RUN "go build -o /lxkota server/main.go
-
-WORKDIR /
-
-COPY --from=builder /lxkota /lxkota
-
-USER nonroot:nonroot
-
-ENTRYPOINT [ "/lxkota" ]
+COPY --from=builder /lxkota /usr/local/bin/
+CMD ["lxkota"]
