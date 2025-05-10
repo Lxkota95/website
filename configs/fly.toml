@@ -2,7 +2,7 @@ app = 'lxkota'
 primary_region = 'ewr'
 
 [build]
-  dockerfile = "build/Dockerfile"
+  dockerfile = "../build/Dockerfile"
   [build.args]
     GO_VERSION = '1.23.1'
 
