@@ -76,7 +76,7 @@ func main() {
 	e.Logger.SetLevel(log.DEBUG)
 	e.Renderer = NewTemplate()
 
-	e.Static("/web/static", "static")
+	e.Static("/static", "web/static")
 
 	e.GET("/", func(c echo.Context) error {
 		// create page data with a title based on the file name

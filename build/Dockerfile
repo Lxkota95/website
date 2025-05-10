@@ -23,6 +23,7 @@ COPY --from=builder /lxkota /app/
 # Copy template file and other assets needed at runtime
 COPY --from=builder /usr/src/app/web/template.html /app/web/template.html
 COPY --from=builder /usr/src/app/web/static /app/web/static
+COPY --from=builder /usr/src/app/web/static/ /app/static/
 COPY --from=builder /usr/src/app/web/content /app/web/content
 
 # Run the binary
