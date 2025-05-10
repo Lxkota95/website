@@ -7,7 +7,7 @@ A web app to help me learn Go & HTMX
 - [X] Add basic content that describes my engineering projects
 - [X] Add code samples for each project
 - [X] Create Dockerfile and image
-- [ ] Set up CI/CD deployment
+- [X] Set up CI/CD deployment
 - [ ] Look into syntax highlighting for code samples
 - [ ] Add drop-down sections for each project using HTMX
 - [ ] Look into Go's `embed` module to include static files in the binary
@@ -20,6 +20,8 @@ A web app to help me learn Go & HTMX
 - Configuration file: `build/Dockerfile`
 - Build: `sudo docker build -t lxkota-test -f build/Dockerfile .`
 - Run: `sudo docker run lxkota-test`
+- Enter: `sudo docker exec -it <CONTAINER ID> /bin/bash`
+- Stop: `sudo docket stop <CONTAINER ID>`
 
 ## Deployment
 - Fly.io is used to deploy and host this site
