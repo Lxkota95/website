@@ -6,10 +6,10 @@ A web app to help me learn Go & HTMX
 - [X] Render HTML pages from templates
 - [X] Add basic content that describes my engineering projects
 - [X] Add code samples for each project
-- [ ] Create Dockerfile and image
+- [X] Create Dockerfile and image
+- [ ] Set up CI/CD deployment
 - [ ] Look into syntax highlighting for code samples
 - [ ] Add drop-down sections for each project using HTMX
-- [ ] Set up CI/CD deployment
 - [ ] Look into Go's `embed` module to include static files in the binary
 
 ## Deployment | Fly io
