@@ -1,6 +1,6 @@
 # About
 - Staff Platform Engineer in FinTech |📍NYC
-- I built (and host) this site myself primarily to learn Go and HTMX
+- I built this site primarily to learn Go and HTMX
 - Below you'll find information about my personal projects
 - [LinkedIn](https://linkedin.com/in/jack-p-coleman)
 
@@ -63,7 +63,7 @@ func main() {
 	e.Logger.Info(e.Start(":42069"))
 }
 ```
-If it wasn't obvious, I went took this approach because I don't enjoy front-end development 😉
+If it wasn't obvious, I took this approach because I don't enjoy front-end development 😉
 
 ---
 ### 2. Ansible
@@ -80,7 +80,7 @@ let host = inventory.get_host("<hostname>")?;
 hostvars = host.get_vars()?;
 ```
 ---
-### 3. Ranked Bot - #TODO
+### 3. Ranked Bot - `#TODO`
 #### A Discord Bot written in Python to assign roles based on your rank in Rainbow Six: Siege
 - [Source Code Repository](https://github.com/Lxkota95/ranked)
 - Example:
@@ -88,7 +88,7 @@ hostvars = host.get_vars()?;
 ```
 
 ---
-### 4. Infra - #TODO
+### 4. Infra - `#TODO`
 #### My infrastructure repo (and tools), built primarily using Ansible
 - [Source Code Repository](https://github.com/Lxkota95/infra)
 
