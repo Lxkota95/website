@@ -7,7 +7,7 @@ A web app to help me learn Go & HTMX
 - [X] Add basic content that describes my engineering projects
 - [X] Add code samples for each project
 - [X] Create Dockerfile and image
-- [X] Set up CI/CD deployment
+- [X] Set up CI/CD deployment via GitHub Actions
 - [ ] Look into syntax highlighting for code samples
 - [ ] Add drop-down sections for each project using HTMX
 - [ ] Look into Go's `embed` module to include static files in the binary
@@ -33,3 +33,8 @@ A web app to help me learn Go & HTMX
 - For SSH:
   - Create token: `flyctl tokens create ssh -a lxkota > lxkota.token.ssh`
   - SSH: `FLY_API_TOKEN=$(cat lxkota.token.ssh) flyctl ssh console -a lxkota`
+
+## CI/CD
+- CI/CD is configured using GitHub Actions with `.github/workflows/fly-deploy.yml`
+- Any commits to the `main` branch will kick off deployment on Fly.io
+- The `FLY_API_TOKEN` was created with `flyctl --config configs/fly.toml tokens create deploy -x 999999h` and is stored in GitHub Action's secrets
