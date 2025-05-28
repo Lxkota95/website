@@ -49,11 +49,11 @@ func main() {
 	e.Logger.SetLevel(log.DEBUG)
 	e.Renderer = NewTemplate()
 
-	e.Static("/static", "static")
+	e.Static("/static", "web/static")
 
 	e.GET("/", func(c echo.Context) error {
 		// create page data with a title based on the file name
-		page_data := NewPage("./content/index.md", e)
+		page_data := NewPage("./web/content/index.md", e)
 
 		// Render the template with our data
 		return c.Render(200, "template.html", page_data)
