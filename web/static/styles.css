@@ -1,119 +1,247 @@
 :root {
-    --primary-color: #4a6fa5;
-    --text-color: #333;
-    --background-color: #f9f9f9;
-    --link-color: #3273dc;
-    --code-bg: #f5f5f5;
-    --border-color: #e1e1e1;
-  }
-  
-  * {
+    --primary-color: #6d9eeb;        /* Lighter blue that works on dark */
+    --text-color: #e0e0e0;           /* Light gray text */
+    --background-color: #121212;     /* Dark background */
+    --link-color: #80b2ff;           /* Brighter blue for links */
+    --code-bg: #2d2d2d;              /* Darker code background */
+    --border-color: #3d3d3d;         /* Darker borders */
+    --card-bg: #1e1e1e;              /* Slightly lighter than background for cards */
+    --table-header-bg: #2a2a2a;      /* Dark table headers */
+    --blockquote-color: #b0b0b0;     /* Lighter gray for blockquotes */
+    --mono-font: "Consolas", "SFMono-Regular", "Liberation Mono", Menlo, Monaco, "Courier New", monospace;
+    
+    /* Syntax highlighting colors */
+    --syntax-keyword: #569CD6;       /* Keywords like func, if, return */
+    --syntax-type: #4EC9B0;          /* Types like int, string */
+    --syntax-string: #ce9178;        /* String literals */
+    --syntax-comment: #6a9955;       /* Comments */
+    --syntax-number: #b5cea8;        /* Number literals */
+    --syntax-function: #dcdcaa;      /* Function names */
+    --syntax-operator: #d4d4d4;      /* Operators like +, -, =, etc */
+    --syntax-constant: #4fc1ff;      /* Constants */
+    --syntax-class: #4EC9B0;         /* Class names */
+    --syntax-attribute: #9cdcfe;     /* HTML/XML attributes */
+}
+
+* {
     box-sizing: border-box;
-  }
-  
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+body {
+    font-family: var(--mono-font);
     line-height: 1.6;
     color: var(--text-color);
     background-color: var(--background-color);
     margin: 0;
     padding: 0;
-  }
-  
-  .container {
+}
+
+.container {
     max-width: 800px;
     margin: 0 auto;
     padding: 2rem 1rem;
-  }
-  
-  header {
+}
+
+header {
     margin-bottom: 2rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid var(--border-color);
-  }
-  
-  header h1 {
+}
+
+header h1 {
     color: var(--primary-color);
     margin-top: 0;
-  }
-  
-  main {
+}
+
+main {
     margin-bottom: 2rem;
-  }
-  
-  article {
-    background-color: white;
+}
+
+article {
+    background-color: var(--card-bg);
     padding: 2rem;
     border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  a {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+a {
     color: var(--link-color);
     text-decoration: none;
-  }
-  
-  a:hover {
+}
+
+a:hover {
     text-decoration: underline;
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
+    color: #98c3ff;  /* Slightly lighter on hover */
+}
+
+h1, h2, h3, h4, h5, h6 {
     color: var(--primary-color);
     line-height: 1.2;
-  }
-  
-  code {
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-family: var(--mono-font);
+    letter-spacing: -0.5px; /* Slightly tighten heading letter spacing for monospace */
+}
+
+code {
+    font-family: var(--mono-font);
     background-color: var(--code-bg);
     padding: 0.2em 0.4em;
     border-radius: 3px;
     font-size: 0.9em;
-  }
-  
-  pre {
+}
+
+pre {
     background-color: var(--code-bg);
     padding: 1rem;
     border-radius: 4px;
     overflow-x: auto;
-  }
-  
-  pre code {
+}
+
+pre code {
     padding: 0;
     background-color: transparent;
-  }
-  
-  blockquote {
+}
+
+blockquote {
     border-left: 4px solid var(--primary-color);
     margin-left: 0;
     padding-left: 1rem;
-    color: #666;
-  }
-  
-  img {
+    color: var(--blockquote-color);
+}
+
+img {
     max-width: 100%;
     height: auto;
-  }
-  
-  table {
+    filter: brightness(0.9) contrast(1.1);
+}
+
+table {
     width: 100%;
     border-collapse: collapse;
     margin: 1rem 0;
-  }
-  
-  table th, table td {
+}
+
+table th, table td {
     padding: 0.5rem;
     border: 1px solid var(--border-color);
-  }
-  
-  table th {
-    background-color: #f5f5f5;
-  }
-  
-  footer {
+}
+
+table th {
+    background-color: var(--table-header-bg);
+}
+
+footer {
     margin-top: 2rem;
     padding-top: 1rem;
     border-top: 1px solid var(--border-color);
-    color: #666;
+    color: #888;
     font-size: 0.9rem;
     text-align: center;
-  }
+}
+
+/* Code block language indicator */
+pre {
+    position: relative;
+    padding-top: 2rem;   /* Make room for language label */
+}
+
+pre[data-language]::before {
+    content: attr(data-language);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #aaa;
+    font-size: 0.8em;
+    padding: 0.2em 0.5em;
+    text-transform: uppercase;
+    border-radius: 4px 4px 0 0;
+}
+
+/* Basic syntax highlighting patterns using CSS only */
+
+/* Keywords - common programming keywords */
+.highlight-keyword,
+code .keyword,
+pre[data-language="go"] .kd,
+pre[data-language="go"] .kn,
+pre[data-language="go"] .k {
+    color: var(--syntax-keyword);
+}
+
+/* Function definition and calls */
+.highlight-function,
+code .func,
+pre[data-language="go"] .fn,
+pre[data-language="go"] .nx {
+    color: var(--syntax-function);
+}
+
+/* String literals */
+.highlight-string,
+code .string,
+pre[data-language="go"] .s,
+pre[data-language="go"] .s1,
+pre[data-language="go"] .s2 {
+    color: var(--syntax-string);
+}
+
+/* Number literals */
+.highlight-number,
+code .number,
+pre[data-language="go"] .mi,
+pre[data-language="go"] .mf {
+    color: var(--syntax-number);
+}
+
+/* Comments */
+.highlight-comment,
+code .comment,
+pre[data-language="go"] .c,
+pre[data-language="go"] .c1,
+pre[data-language="go"] .cm {
+    color: var(--syntax-comment);
+}
+
+/* Types */
+.highlight-type,
+code .type,
+pre[data-language="go"] .kt {
+    color: var(--syntax-type);
+}
+
+/* Constants and built-in values */
+.highlight-constant,
+code .constant,
+pre[data-language="go"] .kc {
+    color: var(--syntax-constant);
+}
+
+/* HTML/XML Tags - basic coloring for HTML */
+pre[data-language="html"] .tag-name,
+pre[data-language="html"] .tag {
+    color: var(--syntax-keyword);
+}
+
+pre[data-language="html"] .attribute-name,
+pre[data-language="html"] .attr {
+    color: var(--syntax-attribute);
+}
+
+pre[data-language="html"] .attribute-value,
+pre[data-language="html"] .string {
+    color: var(--syntax-string);
+}
+
+/* CSS rule selectors */
+pre[data-language="css"] .selector {
+    color: var(--syntax-keyword);
+}
+
+pre[data-language="css"] .property {
+    color: var(--syntax-attribute);
+}
+
+pre[data-language="css"] .value {
+    color: var(--syntax-string);
+}
