@@ -63,7 +63,7 @@ func main() {
 	e.Logger.Info(e.Start(":42069"))
 }
 ```
-If it wasn't obvious, I took this approach because I don't enjoy front-end development 😉
+I took this approach because I don't enjoy front-end development 😉
 
 ---
 ### 2. Ansible
