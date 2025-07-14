@@ -1,18 +1,30 @@
 # About
-- Staff Platform Engineer in FinTech |📍NYC
-- I built this site primarily to learn Go and HTMX
-- Below you'll find information about my personal projects
-- [LinkedIn](https://linkedin.com/in/jack-p-coleman)
+
+I'm a Staff Platform Engineer working in FinTech here in NYC, focused on reliability, performance, and tooling. I built this site primarily to learn Go and HTMX, but it's also become a place where I can showcase my personal projects and experiments.
+
+Below you'll find information about my personal projects, ranging from web servers to infrastructure tooling. Each project represents a different learning journey and technical challenge I've taken on.
+
+**Connect with me:** [LinkedIn](https://linkedin.com/in/jack-p-coleman)
+
+---
 
 ## Projects
 
 ### 1. Website
-#### A web server built on Go, HTMX, and Markdown to display my projects
-- [Source Code Repository](https://github.com/Lxkota95/website)
+<div class="project-header">
+  <h4 class="project-description">A web server built on Go, HTMX, and Markdown to display my projects</h4>
+  <span class="project-status">Status: Active</span>
+</div>
 
-Everything starts with markdown files - including this page you're reading 👀
+<div class="project-links">
+  <a href="https://github.com/Lxkota95/website" class="project-link">
+    📁 Source Code
+  </a>
+</div>
 
-Next, the markdown is converted to HTML with the following function:
+Everything starts with markdown files - including this page you're reading right now 👀
+
+The architecture is simple: markdown gets converted to HTML, then rendered through Go's template system. Here's the heart of the markdown conversion:
 
 ```go
 func markdownToHTML(file string, e *echo.Echo) template.HTML {
@@ -40,7 +52,9 @@ func markdownToHTML(file string, e *echo.Echo) template.HTML {
 	return template.HTML(htmlContent)
 }
 ```
-And lastly, a simple back-end web server renders this HTML using Go's template library:
+
+And the web server itself is straightforward:
+
 ```go
 func main() {
 	// initialize server
@@ -49,11 +63,11 @@ func main() {
 	e.Logger.SetLevel(log.DEBUG)
 	e.Renderer = NewTemplate()
 
-	e.Static("/static", "static")
+	e.Static("/static", "web/static")
 
 	e.GET("/", func(c echo.Context) error {
 		// create page data with a title based on the file name
-		page_data := NewPage("./content/index.md", e)
+		page_data := NewPage("./web/content/index.md", e)
 
 		// Render the template with our data
 		return c.Render(200, "template.html", page_data)
@@ -63,35 +77,88 @@ func main() {
 	e.Logger.Info(e.Start(":42069"))
 }
 ```
-I took this approach because I don't enjoy front-end development 😉
 
----
+> I took this approach because I don't enjoy front-end development 😉  
+> Though I have to admit, working on this redesign has been pretty fun!
+
 ### 2. Ansible
-#### A Rust crate that offers an API for Ansible
-- [Source Code Repository](https://github.com/Lxkota95/ansible)
-- Published on Rust's crate repo [here](https://crates.io/crates/ansible/)
+<div class="project-header">
+  <h4 class="project-description">A Rust crate that offers an API for Ansible</h4>
+  <span class="project-status">Status: Active</span>
+</div>
 
-An example of loading Ansible inventory data for a host
+<div class="project-links">
+  <a href="https://github.com/Lxkota95/ansible" class="project-link">
+    📁 Source Code
+  </a>
+  <a href="https://crates.io/crates/ansible/" class="project-link">
+    📦 Crates.io
+  </a>
+</div>
+
+This crate provides a clean, idiomatic Rust API for working with Ansible inventory data. It's particularly useful when you need to programmatically access host variables and inventory information from within Rust applications.
+
+**Example usage:**
 ```rust
 use ansible::{Inventory, Load};
 
 let inventory = Inventory::load(PathBuf::from('/path/to/inventory'))?;
-let host = inventory.get_host("<hostname>")?;
-hostvars = host.get_vars()?;
+let host = inventory.get_host("")?;
+let hostvars = host.get_vars()?;
 ```
----
-### 3. Ranked Bot - `#TODO`
-#### A Discord Bot written in Python to assign roles based on your rank in Rainbow Six: Siege
-- [Source Code Repository](https://github.com/Lxkota95/ranked)
-- Example:
+
+The crate handles all the complexity of parsing Ansible's various inventory formats and provides a consistent interface for accessing the data you need.
+
+### 3. Ranked Bot
+<div class="project-header">
+  <h4 class="project-description">A Discord Bot written in Python to assign roles based on your rank in Rainbow Six: Siege</h4>
+  <span class="project-status">Status: TODO</span>
+</div>
+
+<div class="project-links">
+  <a href="https://github.com/Lxkota95/ranked" class="project-link">
+    📁 Source Code
+  </a>
+</div>
+
+This Discord bot integrates with the Rainbow Six: Siege API to automatically assign Discord roles based on players' competitive ranks. It's designed to help gaming communities organize their members by skill level.
+
+**Features in development:**
+- Automatic role assignment based on current rank
+- Periodic rank updates
+- Support for multiple game modes
+- Customizable role mappings
+
 ```python
+# Example implementation coming soon!
+```
+
+### 4. Infra
+<div class="project-header">
+  <h4 class="project-description">My infrastructure repo and tools, built primarily using Ansible</h4>
+  <span class="project-status">Status: TODO</span>
+</div>
+
+<div class="project-links">
+  <a href="https://github.com/Lxkota95/infra" class="project-link">
+    📁 Source Code
+  </a>
+</div>
+
+This repository contains my personal infrastructure setup, including CI/CD pipelines, server configurations, and deployment automation. It's built around Ansible for configuration management and includes various custom tools and scripts.
+
+**Planned features:**
+- Automated server provisioning
+- CI/CD pipeline templates
+- Monitoring and alerting setup
+- Backup and disaster recovery procedures
+
+```yaml
+# CI/CD pipeline configuration coming soon!
 ```
 
 ---
-### 4. Infra - `#TODO`
-#### My infrastructure repo (and tools), built primarily using Ansible
-- [Source Code Repository](https://github.com/Lxkota95/infra)
 
-Here's a breakdown of my CI/CD process:
-```yaml
-```
+## Technical Notes
+
+This site is deployed on [Fly.io](https://fly.io) using their container deployment platform. The entire build and deployment process is automated through GitHub Actions, making updates as simple as pushing to the main branch.
