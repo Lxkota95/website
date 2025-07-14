@@ -82,34 +82,14 @@ func markdownToHTML(file string, e *echo.Echo) template.HTML {
 	htmlFlags := html.CommonFlags | html.HrefTargetBlank
 	opts := html.RendererOptions{
 		Flags: htmlFlags,
-		CSS:   "highlight", // Add CSS class for syntax highlighting
 	}
 	renderer := html.NewRenderer(opts)
 
 	// Render the HTML
 	htmlContent := markdown.Render(doc, renderer)
 
-	// Post-process HTML to add language classes to code blocks
-	htmlString := string(htmlContent)
-	htmlString = enhanceCodeBlocks(htmlString)
-
 	// Return as template.HTML to prevent auto-escaping in template
-	return template.HTML(htmlString)
-}
-
-// enhanceCodeBlocks adds language classes and other enhancements to code blocks
-func enhanceCodeBlocks(html string) string {
-	// This is a simple enhancement - in production you might want to use a proper HTML parser
-	// Add language-specific classes for syntax highlighting
-	html = strings.ReplaceAll(html, `<pre><code class="language-go">`, `<pre><code class="language-go highlight-go">`)
-	html = strings.ReplaceAll(html, `<pre><code class="language-rust">`, `<pre><code class="language-rust highlight-rust">`)
-	html = strings.ReplaceAll(html, `<pre><code class="language-python">`, `<pre><code class="language-python highlight-python">`)
-	html = strings.ReplaceAll(html, `<pre><code class="language-yaml">`, `<pre><code class="language-yaml highlight-yaml">`)
-	html = strings.ReplaceAll(html, `<pre><code class="language-javascript">`, `<pre><code class="language-javascript highlight-js">`)
-	html = strings.ReplaceAll(html, `<pre><code class="language-html">`, `<pre><code class="language-html highlight-html">`)
-	html = strings.ReplaceAll(html, `<pre><code class="language-css">`, `<pre><code class="language-css highlight-css">`)
-
-	return html
+	return template.HTML(htmlContent)
 }
 
 func main() {

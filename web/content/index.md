@@ -10,8 +10,6 @@ Below you'll find information about my personal projects, ranging from web serve
 
 ## Projects
 
-<div class="project-section">
-
 ### 1. Website
 <div class="project-header">
   <h4 class="project-description">A web server built on Go, HTMX, and Markdown to display my projects</h4>
@@ -83,10 +81,6 @@ func main() {
 > I took this approach because I don't enjoy front-end development 😉  
 > Though I have to admit, working on this redesign has been pretty fun!
 
-</div>
-
-<div class="project-section">
-
 ### 2. Ansible
 <div class="project-header">
   <h4 class="project-description">A Rust crate that offers an API for Ansible</h4>
@@ -115,10 +109,6 @@ let hostvars = host.get_vars()?;
 
 The crate handles all the complexity of parsing Ansible's various inventory formats and provides a consistent interface for accessing the data you need.
 
-</div>
-
-<div class="project-section">
-
 ### 3. Ranked Bot
 <div class="project-header">
   <h4 class="project-description">A Discord Bot written in Python to assign roles based on your rank in Rainbow Six: Siege</h4>
@@ -143,10 +133,6 @@ This Discord bot integrates with the Rainbow Six: Siege API to automatically ass
 # Example implementation coming soon!
 ```
 
-</div>
-
-<div class="project-section">
-
 ### 4. Infra
 <div class="project-header">
   <h4 class="project-description">My infrastructure repo and tools, built primarily using Ansible</h4>
@@ -170,8 +156,6 @@ This repository contains my personal infrastructure setup, including CI/CD pipel
 ```yaml
 # CI/CD pipeline configuration coming soon!
 ```
-
-</div>
 
 ---
 

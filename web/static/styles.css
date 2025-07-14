@@ -73,9 +73,11 @@ body {
 }
 
 .container {
-    max-width: 65ch;
+    max-width: 1200px !important;
     margin: 0 auto;
     padding: var(--space-xl) var(--space-md);
+    width: 90% !important;
+    min-width: 800px;
 }
 
 /* Header */
@@ -106,6 +108,9 @@ article {
     padding: 0;
     border-radius: 0;
     box-shadow: none;
+    max-width: none !important;
+    margin: 0 auto;
+    width: 100%;
 }
 
 /* Typography */
@@ -318,9 +323,20 @@ footer {
 }
 
 /* Responsive design */
+@media (max-width: 1024px) {
+    .container {
+        width: 95%;
+    }
+}
+
 @media (max-width: 768px) {
     .container {
         padding: var(--space-lg) var(--space-md);
+        width: 100%;
+    }
+    
+    article {
+        max-width: none;
     }
     
     .project-header {
@@ -363,6 +379,62 @@ footer {
 .highlight-operator { color: var(--syntax-operator); }
 .highlight-constant { color: var(--syntax-constant); }
 
+/* Prism.js theme overrides for better integration */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+    color: var(--syntax-comment);
+}
+
+.token.punctuation {
+    color: var(--text-muted);
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+    color: var(--syntax-number);
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+    color: var(--syntax-string);
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+    color: var(--syntax-operator);
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+    color: var(--syntax-keyword);
+}
+
+.token.function,
+.token.class-name {
+    color: var(--syntax-function);
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+    color: var(--syntax-type);
+}
+
 /* Language labels for code blocks */
 pre[data-lang]::before {
     content: attr(data-lang);
@@ -396,4 +468,28 @@ pre[data-lang]::before {
 
 ::-webkit-scrollbar-thumb:hover {
     background: var(--primary-color);
+}
+
+/* Copy button styles */
+.copy-button {
+    position: absolute;
+    top: var(--space-sm);
+    left: var(--space-md);
+    background: var(--background-tertiary);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.75rem;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+    z-index: 10;
+}
+
+.copy-button:hover {
+    opacity: 1;
+    background: var(--primary-color);
+    color: var(--background-color);
+    border-color: var(--primary-color);
 }
