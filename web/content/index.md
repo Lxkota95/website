@@ -1,6 +1,6 @@
 # About
 
-I'm a Staff Platform Engineer working in FinTech here in NYC. I built this site primarily to learn Go and HTMX, but it's also become a place where I can showcase my personal projects and experiments.
+I'm a Staff Platform Engineer working in FinTech here in NYC, focused on reliability, performance, and tooling. I built this site primarily to learn Go and HTMX, but it's also become a place where I can showcase my personal projects and experiments.
 
 Below you'll find information about my personal projects, ranging from web servers to infrastructure tooling. Each project represents a different learning journey and technical challenge I've taken on.
 
