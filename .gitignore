@@ -26,3 +26,5 @@ go.work.sum
 
 # air tmp dir
 /tmp/*
+# Built site (go run ./cmd/site build)
+/public/

@@ -1,6 +1,29 @@
 /* Monospace grid: every size is a multiple of one character (1ch) or one line (--line), so text,
    rules and tables all snap to the same grid, like a terminal but without the costume. */
 
+/* JetBrains Mono, served from this site (SIL Open Font License: fonts/OFL.txt) */
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/JetBrainsMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/JetBrainsMono-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/JetBrainsMono-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
 :root {
   --font: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --line: 1.5rem;
@@ -42,11 +65,13 @@ body { margin: 0; }
 }
 
 h1, h2, p, table, dl, ul { margin: 0 0 var(--line); }
+.prose > :last-child { margin-bottom: 0; }
 
 h1 {
   font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 em { font-style: normal; color: var(--peach); }

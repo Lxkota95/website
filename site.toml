@@ -1,0 +1,72 @@
+# The structured parts of lxkota.com. Prose lives in content/*.md.
+# Build with `go run ./cmd/site build`, preview with `go run ./cmd/site serve`.
+
+name = "Jack Coleman"
+role = "Staff Platform Engineer — FinTech"
+location = "NYC"
+description = "Jack Coleman — Staff Platform Engineer in FinTech, NYC"
+
+# status: "release" (a published version), "active" or "design"
+[[projects]]
+name = "ansible"
+lang = "rust"
+state = "v0.3.0"
+status = "release"
+what = "Typed Rust API for Ansible"
+repo = "https://github.com/Lxkota95/ansible"
+link_label = "crates.io"
+link = "https://crates.io/crates/ansible"
+
+[[projects]]
+name = "clanker"
+lang = "rust"
+state = "active"
+status = "active"
+what = "Discord bot: Siege rank roles"
+repo = "https://github.com/Lxkota95/clanker"
+link_label = "github"
+link = "https://github.com/Lxkota95/clanker"
+
+[[projects]]
+name = "website"
+lang = "go"
+state = "active"
+status = "active"
+what = "This site: markdown → static"
+repo = "https://github.com/Lxkota95/website"
+link_label = "github"
+link = "https://github.com/Lxkota95/website"
+
+[[projects]]
+name = "spoopevich"
+lang = "rust"
+state = "design"
+status = "design"
+what = "Party game for phones"
+
+[[toolbox]]
+key = "languages"
+value = "Rust · Go · Python · Bash"
+
+[[toolbox]]
+key = "platform"
+value = "Linux · Ansible · containers · CI/CD · observability"
+
+[[toolbox]]
+key = "daily"
+value = "Neovim · tmux · Ghostty · Ubuntu"
+
+[[contact]]
+key = "email"
+label = "jack@lxkota.com"
+url = "mailto:jack@lxkota.com"
+
+[[contact]]
+key = "github"
+label = "Lxkota95 ↗"
+url = "https://github.com/Lxkota95"
+
+[[contact]]
+key = "linkedin"
+label = "jack-p-coleman ↗"
+url = "https://linkedin.com/in/jack-p-coleman"
