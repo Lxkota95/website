@@ -1,40 +1,34 @@
-# About
-A web app to help me learn Go & HTMX
+# website
+Source of [lxkota.com](https://lxkota.com): a static site built by a small Go generator from
+`site.toml` and markdown, styled as a monospace grid with terminal colour themes.
 
-## Progress Tracker
-- [X] Convert Markdown content to HTML
-- [X] Render HTML pages from templates
-- [X] Add basic content that describes my engineering projects
-- [X] Add code samples for each project
-- [X] Create Dockerfile and image
-- [X] Set up CI/CD deployment via GitHub Actions
-- [ ] Look into syntax highlighting for code samples
-- [ ] Add drop-down sections for each project using HTMX
-- [ ] Look into Go's `embed` module to include static files in the binary
+## Editing
+- `site.toml`: name, role, projects table, toolbox, contact. Unknown keys fail the build.
+- `content/about.md`: the about paragraph (markdown; raw HTML is not rendered).
+- `internal/site/assets/`: the page template, CSS, theme script, fonts and `_headers`.
 
-## Development
-- The `air` framework is used for local development & testing
-- Build and execute with `air -c configs/.air.toml`
+## Building
+```
+go run ./cmd/site serve          # preview on http://localhost:8080, rebuilt on each page load
+go run ./cmd/site build          # write the site to ./public
+go test ./...
+```
+`serve` reads templates and CSS from disk (edit and refresh) and sends the same headers as
+production, including the content security policy.
 
-## Docker
-- Configuration file: `build/Dockerfile`
-- Build: `sudo docker build -t lxkota-test -f build/Dockerfile .`
-- Run: `sudo docker run lxkota-test`
-- Enter: `sudo docker exec -it <CONTAINER ID> /bin/bash`
-- Stop: `sudo docket stop <CONTAINER ID>`
+## How it works
+- `cmd/site`: the `build` and `serve` commands.
+- `internal/site`: loads and validates `site.toml`, renders markdown with
+  [goldmark](https://github.com/yuin/goldmark), executes `html/template`, and writes `public/`.
+  Assets are embedded in the binary (`//go:embed all:assets`).
+- Builds go to a temporary folder that's swapped into place, and an existing output folder is only
+  replaced if a previous build created it.
+- Everything is self-hosted, including the [JetBrains Mono](https://github.com/JetBrains/JetBrainsMono)
+  font (SIL Open Font License), so `_headers` can allow `'self'` only.
 
-## Deployment
-- Fly.io is used to deploy and host this site
-- Configuration file: `configs/fly.toml`
-- Fly's command line utility `flyctl` is used to orchestrate deployments:
-  - Deploy with `flyctl deploy --config configs/fly.toml`
-  - Check status with `flyctl status --config configs/fly.toml`
-  - Check logs with `flyctl logs --config configs/fly.toml`
-- For SSH:
-  - Create token: `flyctl tokens create ssh -a lxkota > lxkota.token.ssh`
-  - SSH: `FLY_API_TOKEN=$(cat lxkota.token.ssh) flyctl ssh console -a lxkota`
+## Hosting
+Cloudflare Pages, deployed from GitHub Actions. The earlier version, a Go/Echo server on Fly.io, is
+tagged [`go-server-final`](https://github.com/Lxkota95/website/tree/go-server-final).
 
-## CI/CD
-- CI/CD is configured using GitHub Actions with `.github/workflows/fly-deploy.yml`
-- Any commits to the `main` branch will kick off deployment on Fly.io
-- The `FLY_API_TOKEN` was created with `flyctl --config configs/fly.toml tokens create deploy -x 999999h` and is stored in GitHub Action's secrets
+## License
+MIT
