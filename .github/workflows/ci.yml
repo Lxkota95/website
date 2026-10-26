@@ -25,3 +25,32 @@ jobs:
           name: site
           path: public
           include-hidden-files: true
+
+  # Publishes the built site to Cloudflare Pages: pushes to main go live on lxkota.com, every other
+  # branch (i.e. each PR) gets its own preview URL. Needs the CLOUDFLARE_API_TOKEN (Pages: Edit,
+  # this account only) and CLOUDFLARE_ACCOUNT_ID repo secrets.
+  deploy:
+    name: deploy to Cloudflare Pages
+    needs: build
+    runs-on: ubuntu-latest
+    # Secrets aren't available to PRs from forks; only deploy from this repo's own branches
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+    permissions:
+      contents: read
+    concurrency:
+      group: pages-${{ github.head_ref || github.ref_name }}
+      cancel-in-progress: true
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: site
+          path: public
+      - id: deploy
+        uses: cloudflare/wrangler-action@v4
+        with:
+          wranglerVersion: "4.149.0"
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy public --project-name=lxkota --branch=${{ github.head_ref || github.ref_name }}
+      - name: Summary
+        run: echo "Deployed to ${{ steps.deploy.outputs.deployment-url }}" >> "$GITHUB_STEP_SUMMARY"
