@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en" data-theme="mocha">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jack Coleman — lxkota</title>
+  <meta name="description" content="Jack Coleman — Staff Platform Engineer in FinTech, NYC">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="page">
+
+    <header class="masthead">
+      <div class="masthead-row">
+        <h1>JACK COLEMAN<span class="cursor" aria-hidden="true">_</span></h1>
+        <span class="meta">2026 · NYC</span>
+      </div>
+      <p class="role">Staff Platform Engineer — FinTech</p>
+      <hr class="double">
+    </header>
+
+    <section aria-label="About">
+      <p>
+        I work on <em>reliability</em>, <em>performance</em> and <em>tooling</em> for trading
+        systems: the platforms other engineers build on. Outside work I build things to learn
+        them properly, mostly in Rust, sometimes in Go, always from a terminal.
+      </p>
+    </section>
+
+    <section aria-labelledby="projects">
+      <h2 id="projects" class="rule">projects</h2>
+      <table class="grid">
+        <thead>
+          <tr><th>project</th><th>lang</th><th>state</th><th>what</th><th class="right">link</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="https://github.com/Lxkota95/ansible">ansible</a></td>
+            <td class="lang-rust">rust</td>
+            <td><span class="state release">v0.3.0</span></td>
+            <td>Typed Rust API for Ansible</td>
+            <td class="right"><a href="https://crates.io/crates/ansible">crates.io ↗</a></td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/Lxkota95/clanker">clanker</a></td>
+            <td class="lang-rust">rust</td>
+            <td><span class="state active">active</span></td>
+            <td>Discord bot: Siege rank roles</td>
+            <td class="right"><a href="https://github.com/Lxkota95/clanker">github ↗</a></td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/Lxkota95/website">website</a></td>
+            <td class="lang-go">go</td>
+            <td><span class="state active">active</span></td>
+            <td>This site: markdown → static</td>
+            <td class="right"><a href="https://github.com/Lxkota95/website">github ↗</a></td>
+          </tr>
+          <tr>
+            <td>spoopevich</td>
+            <td class="lang-rust">rust</td>
+            <td><span class="state design">design</span></td>
+            <td>Party game for phones</td>
+            <td class="right muted">soon</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section aria-labelledby="stack">
+      <h2 id="stack" class="rule">toolbox</h2>
+      <dl class="pairs">
+        <dt>languages</dt><dd>Rust · Go · Python · Bash</dd>
+        <dt>platform</dt><dd>Linux · Ansible · containers · CI/CD · observability</dd>
+        <dt>daily</dt><dd>Neovim · tmux · Ghostty · Ubuntu</dd>
+      </dl>
+    </section>
+
+    <section aria-labelledby="writing">
+      <h2 id="writing" class="rule">writing</h2>
+      <ul class="log">
+        <li><time datetime="2026-10">2026-10</time><a href="#">Rebuilding my workstation as code</a><span class="muted">draft</span></li>
+        <li><time datetime="2026-10">2026-10</time><a href="#">Trusted publishing a Rust crate from CI</a><span class="muted">draft</span></li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="contact">
+      <h2 id="contact" class="rule">contact</h2>
+      <dl class="pairs">
+        <dt>github</dt><dd><a href="https://github.com/Lxkota95">Lxkota95 ↗</a></dd>
+        <dt>linkedin</dt><dd><a href="https://linkedin.com/in/jack-p-coleman">jack-p-coleman ↗</a></dd>
+      </dl>
+    </section>
+
+    <footer class="footer">
+      <hr>
+      <div class="footer-row">
+        <span class="muted">static · built with Go · <a href="https://github.com/Lxkota95/website">source ↗</a></span>
+        <span class="themes" role="group" aria-label="Colour theme">
+          <button type="button" data-set-theme="mocha">mocha</button>
+          <button type="button" data-set-theme="tokyo">tokyo</button>
+          <button type="button" data-set-theme="gruvbox">gruvbox</button>
+        </span>
+      </div>
+    </footer>
+
+  </main>
+
+  <script>
+    // Prototype-only theme switcher; the choice is remembered when storage is available
+    (function () {
+      const root = document.documentElement;
+      const buttons = document.querySelectorAll('[data-set-theme]');
+      function apply(theme) {
+        root.dataset.theme = theme;
+        buttons.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.setTheme === theme)));
+        try { localStorage.setItem('theme', theme); } catch (e) {}
+      }
+      let saved = null;
+      try { saved = localStorage.getItem('theme'); } catch (e) {}
+      apply(saved || root.dataset.theme);
+      buttons.forEach(b => b.addEventListener('click', () => apply(b.dataset.setTheme)));
+    })();
+  </script>
+</body>
+</html>
