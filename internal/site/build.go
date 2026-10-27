@@ -33,12 +33,24 @@ type Options struct {
 	Now        time.Time // for the year in the masthead; zero means time.Now()
 }
 
-// page is what the HTML template sees.
+// page is what the HTML templates see.
 type page struct {
 	*Config
-	About template.HTML
-	Year  int
+	About       template.HTML
+	ProjectRows []projectRow
+	Year        int
 }
+
+// projectRow is a project plus its optional description from content/projects/<name>.md; rows with
+// a description render as expandable.
+type projectRow struct {
+	Project
+	Description template.HTML
+}
+
+// pages are rendered from templates/layout.html plus templates/<page>. Cloudflare Pages serves
+// 404.html (with a 404 status) for any path that doesn't exist.
+var pages = []string{"index.html", "404.html"}
 
 // Build renders the site into a temporary folder next to OutDir, then swaps it into place, so a
 // failed build never leaves a half-written site behind.
@@ -64,10 +76,11 @@ func Build(opts Options) error {
 	if err != nil {
 		return err
 	}
-	tmpl, err := template.ParseFS(assets, "templates/*.html")
+	rows, err := projectRows(cfg.Projects, filepath.Join(opts.ContentDir, "content", "projects"))
 	if err != nil {
-		return fmt.Errorf("parsing templates: %w", err)
+		return err
 	}
+	data := page{Config: cfg, About: about, ProjectRows: rows, Year: now.Year()}
 
 	parent := filepath.Dir(filepath.Clean(opts.OutDir))
 	if err := os.MkdirAll(parent, 0o755); err != nil {
@@ -79,15 +92,17 @@ func Build(opts Options) error {
 	}
 	defer os.RemoveAll(tmp) // no-op once renamed into place
 
-	var html bytes.Buffer
-	if err := tmpl.ExecuteTemplate(&html, "index.html", page{cfg, about, now.Year()}); err != nil {
-		return fmt.Errorf("rendering index.html: %w", err)
-	}
-	files := map[string][]byte{"index.html": html.Bytes(), marker: nil}
-	for name, data := range files {
-		if err := os.WriteFile(filepath.Join(tmp, name), data, 0o644); err != nil {
+	for _, name := range pages {
+		html, err := renderPage(assets, name, data)
+		if err != nil {
 			return err
 		}
+		if err := os.WriteFile(filepath.Join(tmp, name), html, 0o644); err != nil {
+			return err
+		}
+	}
+	if err := os.WriteFile(filepath.Join(tmp, marker), nil, 0o644); err != nil {
+		return err
 	}
 	if err := copyTree(assets, "static", tmp); err != nil {
 		return err
@@ -104,6 +119,38 @@ func Build(opts Options) error {
 		return err
 	}
 	return nil
+}
+
+// renderPage executes the shared layout with one page's blocks. Each page gets its own template set,
+// because every page defines the same block names ("title", "main").
+func renderPage(assets fs.FS, name string, data page) ([]byte, error) {
+	tmpl, err := template.ParseFS(assets, "templates/layout.html", "templates/"+name)
+	if err != nil {
+		return nil, fmt.Errorf("parsing %s: %w", name, err)
+	}
+	var out bytes.Buffer
+	if err := tmpl.ExecuteTemplate(&out, "layout", data); err != nil {
+		return nil, fmt.Errorf("rendering %s: %w", name, err)
+	}
+	return out.Bytes(), nil
+}
+
+// projectRows pairs each project with content/projects/<name>.md when that file exists.
+func projectRows(projects []Project, dir string) ([]projectRow, error) {
+	rows := make([]projectRow, len(projects))
+	for i, p := range projects {
+		rows[i].Project = p
+		path := filepath.Join(dir, p.Name+".md")
+		if _, err := os.Stat(path); errors.Is(err, fs.ErrNotExist) {
+			continue
+		}
+		desc, err := renderMarkdown(path)
+		if err != nil {
+			return nil, err
+		}
+		rows[i].Description = desc
+	}
+	return rows, nil
 }
 
 // renderMarkdown converts a markdown file to HTML. goldmark's default renderer drops raw HTML in

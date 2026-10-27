@@ -121,21 +121,60 @@ h2.rule {
 h2.rule::before { content: "──"; color: var(--rule); }
 h2.rule::after { content: ""; flex: 1; border-top: 1px solid var(--rule); }
 
-/* Tables on the grid */
-table.grid { width: 100%; border-collapse: collapse; }
-table.grid th {
-  text-align: left;
-  font-weight: 400;
-  color: var(--muted);
-  border-bottom: 1px solid var(--rule);
-  padding: 0 2ch 0 0;
+/* Project rows: a CSS grid with fixed character columns, so every row lines up like a table. A row
+   with a description is a <details> summary: click (or Enter) to open it, no JavaScript. */
+.rows { margin: 0 0 var(--line); }
+.row {
+  display: grid;
+  grid-template-columns: 13ch 5ch 9ch 1fr auto;
+  column-gap: 2ch;
+  white-space: nowrap;
 }
-table.grid td { padding: 0 2ch 0 0; vertical-align: top; white-space: nowrap; }
-/* Only the description wraps; the short columns stay on the grid */
-table.grid td:nth-child(4) { white-space: normal; width: 100%; }
-table.grid th:last-child, table.grid td:last-child { padding-right: 0; }
-table.grid tbody tr { transition: background-color 120ms ease; }
-table.grid tbody tr:hover { background: var(--surface); }
+.row > .what { white-space: normal; }
+.row.head { color: var(--muted); border-bottom: 1px solid var(--rule); }
+
+details.project > summary { list-style: none; cursor: pointer; }
+details.project > summary::-webkit-details-marker { display: none; }
+/* A caret before expandable names: ▸ closed, ▾ open */
+details.project > summary .name::before { content: "▸ "; color: var(--muted); }
+details.project[open] > summary .name::before { content: "▾ "; color: var(--accent); }
+.row .name { padding-left: 2ch; }
+details.project > summary .name { padding-left: 0; }
+.rows > [role="listitem"] > .row,
+details.project > summary { transition: background-color 120ms ease; }
+.rows > [role="listitem"] > .row:hover,
+details.project > summary:hover { background: var(--surface); }
+
+.desc {
+  margin: 0 0 var(--line) 2ch;
+  padding: calc(var(--line) / 2) 2ch;
+  border-left: 1px solid var(--rule);
+  background: var(--surface);
+}
+.desc > :last-child { margin-bottom: 0; }
+.desc ul { padding-left: 2ch; }
+.hint { font-size: 0.85em; }
+
+/* Roadmap: status · name · what */
+ul.plans, ol.plans { list-style: none; padding: 0; }
+.plans li { display: grid; grid-template-columns: 7ch 16ch 1fr; column-gap: 2ch; }
+.plans .name { color: var(--text); }
+.plan.next { color: var(--green); }
+.plan.later { color: var(--yellow); }
+.plan.idea { color: var(--muted); }
+/* Numbered learning track: the number takes the first column */
+ol.numbered { counter-reset: step; }
+ol.numbered li { grid-template-columns: 3ch 7ch 16ch 1fr; counter-increment: step; }
+ol.numbered li::before { content: counter(step) "."; color: var(--muted); }
+h3.sub { font-size: 1rem; font-weight: 400; color: var(--mauve); margin: 0 0 calc(var(--line) / 2); }
+h3.sub::before { content: "· "; color: var(--rule); }
+
+/* 404 */
+.not-found .prompt { color: var(--accent); }
+.not-found .path { color: var(--peach); }
+
+/* The name links home, styled as plain text */
+a.home { color: inherit; background-image: none; }
 
 .lang-rust { color: var(--peach); }
 .lang-go { color: var(--sky); }
@@ -172,11 +211,17 @@ ul.log time { color: var(--muted); }
 .themes button::after { content: "]"; }
 .themes button[aria-pressed="true"] { color: var(--accent); }
 
-/* Phones: drop the "what" column and let the table scroll rather than squash */
+/* Phones: project rows drop the "what" column (the description is one tap away); roadmap entries
+   put the description on its own line */
 @media (max-width: 640px) {
   html { font-size: 14px; }
   .page { padding-left: 16px; padding-right: 16px; }
-  table.grid th:nth-child(4), table.grid td:nth-child(4) { display: none; }
+  .row { grid-template-columns: 12ch 4ch 8ch auto; }
+  .row > .what { display: none; }
+  .plans li { grid-template-columns: 6ch 1fr; }
+  .plans .what { grid-column: 2; color: var(--muted); }
+  ol.numbered li { grid-template-columns: 3ch 6ch 1fr; }
+  ol.numbered .what { grid-column: 3; }
   dl.pairs { grid-template-columns: 10ch 1fr; }
   ul.log li { grid-template-columns: 8ch 1fr; }
   ul.log li .muted { display: none; }

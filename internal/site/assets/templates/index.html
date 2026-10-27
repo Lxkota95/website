@@ -1,50 +1,48 @@
-<!doctype html>
-<html lang="en" data-theme="mocha">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{.Name}} — lxkota</title>
-  <meta name="description" content="{{.Description}}">
-  <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/style.css">
-  {{/* Runs before the page paints, so a saved theme doesn't flash the default first */}}
-  <script src="/theme.js"></script>
-</head>
-<body>
-  <main class="page">
-
-    <header class="masthead">
-      <div class="masthead-row">
-        <h1>{{.Name}}<span class="cursor" aria-hidden="true">_</span></h1>
-        <span class="meta">{{.Year}}{{with .Location}} · {{.}}{{end}}</span>
-      </div>
-      {{with .Role}}<p class="role">{{.}}</p>{{end}}
-      <hr class="double">
-    </header>
-
+{{define "main"}}
     <section aria-label="About" class="prose">
       {{.About}}
     </section>
 
-    {{with .Projects}}
+    {{with .ProjectRows}}
     <section aria-labelledby="projects">
       <h2 id="projects" class="rule">projects</h2>
-      <table class="grid">
-        <thead>
-          <tr><th>project</th><th>lang</th><th>state</th><th>what</th><th class="right">link</th></tr>
-        </thead>
-        <tbody>
-          {{range .}}
-          <tr>
-            <td>{{if .Repo}}<a href="{{.Repo}}">{{.Name}}</a>{{else}}{{.Name}}{{end}}</td>
-            <td class="lang-{{.Lang}}">{{.Lang}}</td>
-            <td><span class="state {{.Status}}">{{.State}}</span></td>
-            <td>{{.What}}</td>
-            <td class="right">{{if .Link}}<a href="{{.Link}}">{{.LinkLabel}} ↗</a>{{else}}<span class="muted">soon</span>{{end}}</td>
-          </tr>
+      <div class="rows" role="list">
+        <div class="row head" aria-hidden="true">
+          <span>project</span><span>lang</span><span>state</span><span class="what">what</span><span class="right">link</span>
+        </div>
+        {{range .}}
+        <div role="listitem">
+          {{if .Description}}
+          <details class="project">
+            <summary class="row">{{template "project-cells" .}}</summary>
+            <div class="desc prose">{{.Description}}</div>
+          </details>
+          {{else}}
+          <div class="row">{{template "project-cells" .}}</div>
           {{end}}
-        </tbody>
-      </table>
+        </div>
+        {{end}}
+      </div>
+      <p class="hint muted">▸ opens a project</p>
+    </section>
+    {{end}}
+
+    {{if or .Roadmap .Learning}}
+    <section aria-labelledby="roadmap">
+      <h2 id="roadmap" class="rule">roadmap</h2>
+      {{with .Roadmap}}
+      <ul class="plans">
+        {{range .}}<li><span class="plan {{.Status}}">{{.Status}}</span><span class="name">{{.Name}}</span><span class="what">{{.What}}</span></li>
+        {{end}}
+      </ul>
+      {{end}}
+      {{with .Learning}}
+      <h3 class="sub">learning: systems programming in Rust</h3>
+      <ol class="plans numbered">
+        {{range .}}<li><span class="plan {{.Status}}">{{.Status}}</span><span class="name">{{.Name}}</span><span class="what">{{.What}}</span></li>
+        {{end}}
+      </ol>
+      {{end}}
     </section>
     {{end}}
 
@@ -67,19 +65,6 @@
       </dl>
     </section>
     {{end}}
+{{end}}
 
-    <footer class="footer">
-      <hr>
-      <div class="footer-row">
-        <span class="muted">static · built with Go · <a href="https://github.com/Lxkota95/website">source ↗</a></span>
-        <span class="themes" role="group" aria-label="Colour theme">
-          <button type="button" data-set-theme="mocha">mocha</button>
-          <button type="button" data-set-theme="tokyo">tokyo</button>
-          <button type="button" data-set-theme="gruvbox">gruvbox</button>
-        </span>
-      </div>
-    </footer>
-
-  </main>
-</body>
-</html>
+{{define "project-cells"}}<span class="name">{{if .Repo}}<a href="{{.Repo}}">{{.Name}}</a>{{else}}{{.Name}}{{end}}</span><span class="lang-{{.Lang}}">{{.Lang}}</span><span><span class="state {{.Status}}">{{.State}}</span></span><span class="what">{{.What}}</span><span class="right">{{if .Link}}<a href="{{.Link}}">{{.LinkLabel}} ↗</a>{{else}}<span class="muted">soon</span>{{end}}</span>{{end}}

@@ -1,0 +1,42 @@
+{{define "layout"}}<!doctype html>
+<html lang="en" data-theme="mocha">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{block "title" .}}{{.Name}} — lxkota{{end}}</title>
+  <meta name="description" content="{{.Description}}">
+  <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/style.css">
+  {{/* Runs before the page paints, so a saved theme doesn't flash the default first */}}
+  <script src="/theme.js"></script>
+</head>
+<body>
+  <main class="page">
+
+    <header class="masthead">
+      <div class="masthead-row">
+        <h1><a href="/" class="home">{{.Name}}</a><span class="cursor" aria-hidden="true">_</span></h1>
+        <span class="meta">{{.Year}}{{with .Location}} · {{.}}{{end}}</span>
+      </div>
+      {{with .Role}}<p class="role">{{.}}</p>{{end}}
+      <hr class="double">
+    </header>
+
+    {{block "main" .}}{{end}}
+
+    <footer class="footer">
+      <hr>
+      <div class="footer-row">
+        <span class="muted">static · built with Go · <a href="https://github.com/Lxkota95/website">source ↗</a></span>
+        <span class="themes" role="group" aria-label="Colour theme">
+          <button type="button" data-set-theme="mocha">mocha</button>
+          <button type="button" data-set-theme="tokyo">tokyo</button>
+          <button type="button" data-set-theme="gruvbox">gruvbox</button>
+        </span>
+      </div>
+    </footer>
+
+  </main>
+</body>
+</html>
+{{end}}
