@@ -18,6 +18,8 @@ type Config struct {
 	Projects    []Project `toml:"projects"`
 	Toolbox     []Pair    `toml:"toolbox"`
 	Contact     []Link    `toml:"contact"`
+	Roadmap     []Plan    `toml:"roadmap"`  // upcoming work, most imminent first
+	Learning    []Plan    `toml:"learning"` // the learning track, in order
 }
 
 // Project is one row of the projects table.
@@ -30,6 +32,13 @@ type Project struct {
 	Repo      string `toml:"repo"`       // optional: links the project name
 	LinkLabel string `toml:"link_label"` // optional: the right-hand link
 	Link      string `toml:"link"`
+}
+
+// Plan is one roadmap or learning-track entry.
+type Plan struct {
+	Name   string `toml:"name"`
+	Status string `toml:"status"` // one of validPlanStatuses
+	What   string `toml:"what"`
 }
 
 // Pair is a key/value line, as in the toolbox section.
@@ -45,7 +54,10 @@ type Link struct {
 	URL   string `toml:"url"`
 }
 
-var validStatuses = []string{"release", "active", "design"}
+var (
+	validStatuses     = []string{"release", "active", "design"}
+	validPlanStatuses = []string{"next", "later", "idea"}
+)
 
 // LoadConfig reads and validates site.toml. Unknown keys are errors, so a typo (say `staus`)
 // fails the build instead of silently dropping the value.
@@ -84,6 +96,22 @@ func (c *Config) validate() error {
 		if (p.LinkLabel == "") != (p.Link == "") {
 			errs = append(errs, fmt.Errorf("projects[%d] (%s): set both link_label and link, or neither",
 				i, p.Name))
+		}
+	}
+	// A slice, not a map: map iteration order is random, and error output should be stable
+	for _, list := range []struct {
+		section string
+		plans   []Plan
+	}{{"roadmap", c.Roadmap}, {"learning", c.Learning}} {
+		section := list.section
+		for i, p := range list.plans {
+			if p.Name == "" || p.What == "" {
+				errs = append(errs, fmt.Errorf("%s[%d]: name and what are required", section, i))
+			}
+			if !slices.Contains(validPlanStatuses, p.Status) {
+				errs = append(errs, fmt.Errorf("%s[%d] (%s): status %q is not one of %s",
+					section, i, p.Name, p.Status, strings.Join(validPlanStatuses, ", ")))
+			}
 		}
 	}
 	for i, l := range c.Contact {

@@ -29,6 +29,16 @@ lang = "go"
 state = "design"
 status = "design"
 
+[[roadmap]]
+name = "difference-engine"
+status = "next"
+what = "Mechanical calculation"
+
+[[learning]]
+name = "punch-cards"
+status = "idea"
+what = "Programs on cards"
+
 [[contact]]
 key = "email"
 label = "ada@example.com"
@@ -98,6 +108,50 @@ func TestBuildRendersTheHomePage(t *testing.T) {
 	}
 }
 
+func TestProjectsExpandOnlyWithADescription(t *testing.T) {
+	dir := writeContent(t, minimalConfig, "hi\n")
+	projects := filepath.Join(dir, "content", "projects")
+	if err := os.MkdirAll(projects, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(projects, "engine.md"), []byte("It *computes*.\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	out := filepath.Join(t.TempDir(), "public")
+	if err := Build(Options{ContentDir: dir, OutDir: out}); err != nil {
+		t.Fatal(err)
+	}
+	html := readFile(t, filepath.Join(out, "index.html"))
+	if got := strings.Count(html, `<details class="project">`); got != 1 {
+		t.Errorf("want exactly 1 expandable project (engine has a description), got %d", got)
+	}
+	if !strings.Contains(html, "It <em>computes</em>.") {
+		t.Error("the description markdown should render inside the project")
+	}
+}
+
+func TestRoadmapAndLearningTrack(t *testing.T) {
+	html := readFile(t, filepath.Join(build(t, minimalConfig, "hi\n"), "index.html"))
+	for _, want := range []string{
+		`<span class="plan next">next</span><span class="name">difference-engine</span>`,
+		"learning: systems programming in Rust",
+		`<span class="plan idea">idea</span><span class="name">punch-cards</span>`,
+	} {
+		if !strings.Contains(html, want) {
+			t.Errorf("index.html is missing %q", want)
+		}
+	}
+}
+
+func TestNotFoundPage(t *testing.T) {
+	html := readFile(t, filepath.Join(build(t, minimalConfig, "hi\n"), "404.html"))
+	for _, want := range []string{"<title>not found — lxkota</title>", "No such file or directory", `href="/"`} {
+		if !strings.Contains(html, want) {
+			t.Errorf("404.html is missing %q", want)
+		}
+	}
+}
+
 func TestBuildShipsStaticFilesAndHeaders(t *testing.T) {
 	out := build(t, minimalConfig, "hi\n")
 	for _, f := range []string{"style.css", "theme.js", "fonts/JetBrainsMono-Regular.woff2", "fonts/OFL.txt", "_headers"} {
@@ -146,6 +200,10 @@ func TestConfigErrors(t *testing.T) {
 		"link without label": {
 			config:  strings.Replace(minimalConfig, `link_label = "docs"`, "", 1),
 			wantErr: "set both link_label and link",
+		},
+		"bad roadmap status": {
+			config:  strings.Replace(minimalConfig, `status = "next"`, `status = "soon"`, 1),
+			wantErr: `roadmap[0] (difference-engine): status "soon" is not one of next, later, idea`,
 		},
 		"missing name": {
 			config:  strings.Replace(minimalConfig, `name = "Ada"`, "", 1),

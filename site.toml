@@ -44,6 +44,58 @@ state = "design"
 status = "design"
 what = "Party game for phones"
 
+# Roadmap and learning track. status: "next" (soon), "later" (planned) or "idea" (no plan yet).
+# The private, complete roadmap lives in the lxkota repo; this is the public, curated part.
+[[roadmap]]
+name = "spoopevich"
+status = "next"
+what = "Party game for phones: everyone sees every player's tell except their own"
+
+[[roadmap]]
+name = "lxkota.com"
+status = "later"
+what = "Terminal-style navigation, and writing about how I build things"
+
+[[roadmap]]
+name = "ansible"
+status = "later"
+what = "Inventory groups, then running ad-hoc commands and playbooks from Rust"
+
+[[roadmap]]
+name = "clanker"
+status = "later"
+what = "Always-on hosting and new commands (reminders, polls)"
+
+[[learning]]
+name = "discord-mcp"
+status = "next"
+what = "MCP server that lets AI assistants help run a Discord server, with guardrails"
+
+[[learning]]
+name = "shell"
+status = "later"
+what = "A Unix shell: processes, pipes, redirection, job control, signals"
+
+[[learning]]
+name = "kv-store"
+status = "later"
+what = "A storage engine: write-ahead log, crash recovery, compaction"
+
+[[learning]]
+name = "container"
+status = "later"
+what = "A container runtime: namespaces, cgroups, overlay filesystems"
+
+[[learning]]
+name = "tcp"
+status = "idea"
+what = "TCP from the packets up, in userspace on a TUN device"
+
+[[learning]]
+name = "ebpf"
+status = "idea"
+what = "An eBPF observability tool: tracing in the kernel with aya"
+
 [[toolbox]]
 key = "languages"
 value = "Rust · Go · Python · Bash"
