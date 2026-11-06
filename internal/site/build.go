@@ -3,7 +3,9 @@ package site
 
 import (
 	"bytes"
+	"crypto/sha256"
 	"embed"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"html/template"
@@ -127,7 +129,8 @@ func Build(opts Options) error {
 // renderPage executes the shared layout with one page's blocks. Each page gets its own template set,
 // because every page defines the same block names ("title", "main").
 func renderPage(assets fs.FS, name string, data page) ([]byte, error) {
-	tmpl, err := template.ParseFS(assets, "templates/layout.html", "templates/"+name)
+	funcs := template.FuncMap{"asset": func(path string) (string, error) { return assetURL(assets, path) }}
+	tmpl, err := template.New(name).Funcs(funcs).ParseFS(assets, "templates/layout.html", "templates/"+name)
 	if err != nil {
 		return nil, fmt.Errorf("parsing %s: %w", name, err)
 	}
@@ -136,6 +139,17 @@ func renderPage(assets fs.FS, name string, data page) ([]byte, error) {
 		return nil, fmt.Errorf("rendering %s: %w", name, err)
 	}
 	return out.Bytes(), nil
+}
+
+// assetURL returns the URL of static/<path> with a hash of its contents, e.g. /style.css?v=3f2a...
+// Browsers cache static files for hours, so a changed file needs a new URL to show up at once.
+func assetURL(assets fs.FS, path string) (string, error) {
+	data, err := fs.ReadFile(assets, "static/"+path)
+	if err != nil {
+		return "", err
+	}
+	sum := sha256.Sum256(data)
+	return "/" + path + "?v=" + hex.EncodeToString(sum[:6]), nil
 }
 
 // projectRows pairs each project with content/projects/<name>.md when that file exists.
