@@ -3,8 +3,10 @@ package site
 import (
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"testing"
+	"testing/fstest"
 	"time"
 )
 
@@ -152,6 +154,25 @@ func TestLearningPath(t *testing.T) {
 		if !strings.Contains(html, want) {
 			t.Errorf("index.html is missing %q", want)
 		}
+	}
+}
+
+func TestAssetURLsChangeWithContent(t *testing.T) {
+	html := readFile(t, filepath.Join(build(t, minimalConfig, "hi\n"), "index.html"))
+	for _, re := range []string{`href="/style\.css\?v=[0-9a-f]{12}"`, `src="/theme\.js\?v=[0-9a-f]{12}"`} {
+		if !regexp.MustCompile(re).MatchString(html) {
+			t.Errorf("index.html has no versioned asset URL matching %s", re)
+		}
+	}
+	a := fstest.MapFS{"static/style.css": {Data: []byte("a{}")}}
+	b := fstest.MapFS{"static/style.css": {Data: []byte("b{}")}}
+	ua, _ := assetURL(a, "style.css")
+	ub, _ := assetURL(b, "style.css")
+	if ua == ub {
+		t.Errorf("different contents gave the same URL %s", ua)
+	}
+	if _, err := assetURL(a, "missing.css"); err == nil {
+		t.Error("a missing asset should fail the build")
 	}
 }
 
