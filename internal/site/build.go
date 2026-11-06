@@ -42,11 +42,14 @@ type page struct {
 }
 
 // projectRow is a project plus its optional description from content/projects/<name>.md; rows with
-// a description render as expandable.
+// a description or a next step render as expandable.
 type projectRow struct {
 	Project
 	Description template.HTML
 }
+
+// Expandable reports whether the row has anything to show when opened.
+func (r projectRow) Expandable() bool { return r.Description != "" || r.Next != "" }
 
 // pages are rendered from templates/layout.html plus templates/<page>. Cloudflare Pages serves
 // 404.html (with a 404 status) for any path that doesn't exist.

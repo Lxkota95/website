@@ -11,11 +11,14 @@
           <span>project</span><span>lang</span><span>state</span><span class="what">what</span><span class="right">link</span>
         </div>
         {{range .}}
-        <div role="listitem">
-          {{if .Description}}
+        <div role="listitem" id="project-{{.Name}}">
+          {{if .Expandable}}
           <details class="project">
             <summary class="row">{{template "project-cells" .}}</summary>
-            <div class="desc prose">{{.Description}}</div>
+            <div class="desc prose">
+              {{.Description}}
+              {{with .Next}}<p class="next"><span class="label">next</span> {{.}}</p>{{end}}
+            </div>
           </details>
           {{else}}
           <div class="row">{{template "project-cells" .}}</div>
@@ -27,22 +30,14 @@
     </section>
     {{end}}
 
-    {{if or .Roadmap .Learning}}
-    <section aria-labelledby="roadmap">
-      <h2 id="roadmap" class="rule">roadmap</h2>
-      {{with .Roadmap}}
-      <ul class="plans">
-        {{range .}}<li><span class="plan {{.Status}}">{{.Status}}</span><span class="name">{{.Name}}</span><span class="what">{{.What}}</span></li>
-        {{end}}
-      </ul>
-      {{end}}
-      {{with .Learning}}
-      <h3 class="sub">learning: systems programming in Rust</h3>
-      <ol class="plans numbered">
-        {{range .}}<li><span class="plan {{.Status}}">{{.Status}}</span><span class="name">{{.Name}}</span><span class="what">{{.What}}</span></li>
+    {{with .Learning}}
+    <section aria-labelledby="learning">
+      <h2 id="learning" class="rule">learning path</h2>
+      <p class="muted">Systems programming in Rust, one project at a time, each building on the last.</p>
+      <ol class="steps">
+        {{range .}}<li class="{{.Status}}"{{if eq .Status "now"}} aria-current="step"{{end}}><span class="step {{.Status}}">{{.Status}}</span><span class="name">{{if .Project}}<a href="#project-{{.Project}}">{{.Name}}</a>{{else}}{{.Name}}{{end}}</span><span class="what">{{.What}}</span></li>
         {{end}}
       </ol>
-      {{end}}
     </section>
     {{end}}
 

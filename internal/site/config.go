@@ -18,8 +18,7 @@ type Config struct {
 	Projects    []Project `toml:"projects"`
 	Toolbox     []Pair    `toml:"toolbox"`
 	Contact     []Link    `toml:"contact"`
-	Roadmap     []Plan    `toml:"roadmap"`  // upcoming work, most imminent first
-	Learning    []Plan    `toml:"learning"` // the learning track, in order
+	Learning    []Step    `toml:"learning"` // the learning path, in order
 }
 
 // Project is one row of the projects table.
@@ -32,13 +31,15 @@ type Project struct {
 	Repo      string `toml:"repo"`       // optional: links the project name
 	LinkLabel string `toml:"link_label"` // optional: the right-hand link
 	Link      string `toml:"link"`
+	Next      string `toml:"next"` // optional: what's planned next, shown when the row is opened
 }
 
-// Plan is one roadmap or learning-track entry.
-type Plan struct {
-	Name   string `toml:"name"`
-	Status string `toml:"status"` // one of validPlanStatuses
-	What   string `toml:"what"`
+// Step is one entry of the learning path.
+type Step struct {
+	Name    string `toml:"name"`
+	Status  string `toml:"status"` // one of validStepStatuses
+	What    string `toml:"what"`
+	Project string `toml:"project"` // optional: the project it's built in; links to its row
 }
 
 // Pair is a key/value line, as in the toolbox section.
@@ -55,8 +56,8 @@ type Link struct {
 }
 
 var (
-	validStatuses     = []string{"release", "active", "design"}
-	validPlanStatuses = []string{"next", "later", "idea"}
+	validStatuses     = []string{"release", "active", "learning", "design", "done"}
+	validStepStatuses = []string{"now", "planned", "idea"}
 )
 
 // LoadConfig reads and validates site.toml. Unknown keys are errors, so a typo (say `staus`)
@@ -98,20 +99,19 @@ func (c *Config) validate() error {
 				i, p.Name))
 		}
 	}
-	// A slice, not a map: map iteration order is random, and error output should be stable
-	for _, list := range []struct {
-		section string
-		plans   []Plan
-	}{{"roadmap", c.Roadmap}, {"learning", c.Learning}} {
-		section := list.section
-		for i, p := range list.plans {
-			if p.Name == "" || p.What == "" {
-				errs = append(errs, fmt.Errorf("%s[%d]: name and what are required", section, i))
-			}
-			if !slices.Contains(validPlanStatuses, p.Status) {
-				errs = append(errs, fmt.Errorf("%s[%d] (%s): status %q is not one of %s",
-					section, i, p.Name, p.Status, strings.Join(validPlanStatuses, ", ")))
-			}
+	for i, s := range c.Learning {
+		if s.Name == "" || s.What == "" {
+			errs = append(errs, fmt.Errorf("learning[%d]: name and what are required", i))
+		}
+		if !slices.Contains(validStepStatuses, s.Status) {
+			errs = append(errs, fmt.Errorf("learning[%d] (%s): status %q is not one of %s",
+				i, s.Name, s.Status, strings.Join(validStepStatuses, ", ")))
+		}
+		if s.Project != "" && !slices.ContainsFunc(c.Projects, func(p Project) bool {
+			return p.Name == s.Project
+		}) {
+			errs = append(errs, fmt.Errorf("learning[%d] (%s): project %q is not in projects",
+				i, s.Name, s.Project))
 		}
 	}
 	for i, l := range c.Contact {
