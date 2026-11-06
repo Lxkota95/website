@@ -28,11 +28,19 @@ name = "notes"
 lang = "go"
 state = "design"
 status = "design"
+next = "Mechanical calculation"
 
-[[roadmap]]
+[[projects]]
+name = "loom"
+lang = "go"
+state = "done"
+status = "done"
+
+[[learning]]
 name = "difference-engine"
-status = "next"
-what = "Mechanical calculation"
+status = "now"
+what = "Calculation by machine"
+project = "notes"
 
 [[learning]]
 name = "punch-cards"
@@ -122,20 +130,24 @@ func TestProjectsExpandOnlyWithADescription(t *testing.T) {
 		t.Fatal(err)
 	}
 	html := readFile(t, filepath.Join(out, "index.html"))
-	if got := strings.Count(html, `<details class="project">`); got != 1 {
-		t.Errorf("want exactly 1 expandable project (engine has a description), got %d", got)
+	if got := strings.Count(html, `<details class="project">`); got != 2 {
+		t.Errorf("want 2 expandable projects (engine: a description, notes: a next step; loom: neither), got %d", got)
+	}
+	if !strings.Contains(html, `<p class="next"><span class="label">next</span> Mechanical calculation</p>`) {
+		t.Error("a project's next step should render inside it")
 	}
 	if !strings.Contains(html, "It <em>computes</em>.") {
 		t.Error("the description markdown should render inside the project")
 	}
 }
 
-func TestRoadmapAndLearningTrack(t *testing.T) {
+func TestLearningPath(t *testing.T) {
 	html := readFile(t, filepath.Join(build(t, minimalConfig, "hi\n"), "index.html"))
 	for _, want := range []string{
-		`<span class="plan next">next</span><span class="name">difference-engine</span>`,
-		"learning: systems programming in Rust",
-		`<span class="plan idea">idea</span><span class="name">punch-cards</span>`,
+		`<li class="now" aria-current="step"><span class="step now">now</span>` +
+			`<span class="name"><a href="#project-notes">difference-engine</a></span>`,
+		`<li class="idea"><span class="step idea">idea</span><span class="name">punch-cards</span>`,
+		`id="project-notes"`,
 	} {
 		if !strings.Contains(html, want) {
 			t.Errorf("index.html is missing %q", want)
@@ -201,9 +213,13 @@ func TestConfigErrors(t *testing.T) {
 			config:  strings.Replace(minimalConfig, `link_label = "docs"`, "", 1),
 			wantErr: "set both link_label and link",
 		},
-		"bad roadmap status": {
-			config:  strings.Replace(minimalConfig, `status = "next"`, `status = "soon"`, 1),
-			wantErr: `roadmap[0] (difference-engine): status "soon" is not one of next, later, idea`,
+		"bad learning status": {
+			config:  strings.Replace(minimalConfig, `status = "now"`, `status = "soon"`, 1),
+			wantErr: `learning[0] (difference-engine): status "soon" is not one of now, planned, idea`,
+		},
+		"learning step names an unknown project": {
+			config:  strings.Replace(minimalConfig, `project = "notes"`, `project = "nope"`, 1),
+			wantErr: `learning[0] (difference-engine): project "nope" is not in projects`,
 		},
 		"missing name": {
 			config:  strings.Replace(minimalConfig, `name = "Ada"`, "", 1),

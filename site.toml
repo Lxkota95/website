@@ -6,7 +6,8 @@ role = "Staff Platform Engineer — FinTech"
 location = "NYC"
 description = "Jack Coleman — Staff Platform Engineer in FinTech, NYC"
 
-# status: "release" (a published version), "active" or "design"
+# status: "release" (a published version), "active", "learning" (built to learn, from a course),
+# "design" or "done" (finished; no more work planned). `next` is shown when the row is opened.
 [[projects]]
 name = "ansible"
 lang = "rust"
@@ -16,6 +17,7 @@ what = "Typed Rust API for Ansible"
 repo = "https://github.com/Lxkota95/ansible"
 link_label = "crates.io"
 link = "https://crates.io/crates/ansible"
+next = "Inventory groups, then running ad-hoc commands and playbooks from Rust"
 
 [[projects]]
 name = "clanker"
@@ -26,6 +28,7 @@ what = "Discord bot: Siege rank roles"
 repo = "https://github.com/Lxkota95/clanker"
 link_label = "github"
 link = "https://github.com/Lxkota95/clanker"
+next = "Always-on hosting, and new commands (reminders, polls)"
 
 [[projects]]
 name = "website"
@@ -36,6 +39,18 @@ what = "This site: markdown → static"
 repo = "https://github.com/Lxkota95/website"
 link_label = "github"
 link = "https://github.com/Lxkota95/website"
+next = "Terminal-style navigation, and writing about how I build things"
+
+[[projects]]
+name = "discord-mcp"
+lang = "rust"
+state = "learning"
+status = "learning"
+what = "MCP server for Discord admin"
+repo = "https://github.com/Lxkota95/discord-mcp"
+link_label = "github"
+link = "https://github.com/Lxkota95/discord-mcp"
+next = "Tools, then async with tokio, then a Discord REST client"
 
 [[projects]]
 name = "spoopevich"
@@ -43,47 +58,39 @@ lang = "rust"
 state = "design"
 status = "design"
 what = "Party game for phones"
+next = "A design doc: rooms, join links, live updates to every phone"
 
-# Roadmap and learning track. status: "next" (soon), "later" (planned) or "idea" (no plan yet).
-# The private, complete roadmap lives in the lxkota repo; this is the public, curated part.
-[[roadmap]]
-name = "spoopevich"
-status = "next"
-what = "Party game for phones: everyone sees every player's tell except their own"
+[[projects]]
+name = "odst"
+lang = "go"
+state = "done"
+status = "done"
+what = "Order messages in binary (SBE)"
+repo = "https://github.com/Lxkota95/odst"
+link_label = "github"
+link = "https://github.com/Lxkota95/odst"
 
-[[roadmap]]
-name = "lxkota.com"
-status = "later"
-what = "Terminal-style navigation, and writing about how I build things"
-
-[[roadmap]]
-name = "ansible"
-status = "later"
-what = "Inventory groups, then running ad-hoc commands and playbooks from Rust"
-
-[[roadmap]]
-name = "clanker"
-status = "later"
-what = "Always-on hosting and new commands (reminders, polls)"
-
+# The learning path, in order. status: "now", "planned" or "idea"; `project` links to its row above.
+# The private, complete roadmap lives in the lxkota repo.
 [[learning]]
 name = "discord-mcp"
-status = "next"
-what = "MCP server that lets AI assistants help run a Discord server, with guardrails"
+status = "now"
+what = "A real protocol by hand (JSON-RPC, MCP), async Rust, safe tools for AI"
+project = "discord-mcp"
 
 [[learning]]
 name = "shell"
-status = "later"
+status = "planned"
 what = "A Unix shell: processes, pipes, redirection, job control, signals"
 
 [[learning]]
 name = "kv-store"
-status = "later"
+status = "planned"
 what = "A storage engine: write-ahead log, crash recovery, compaction"
 
 [[learning]]
 name = "container"
-status = "later"
+status = "planned"
 what = "A container runtime: namespaces, cgroups, overlay filesystems"
 
 [[learning]]
